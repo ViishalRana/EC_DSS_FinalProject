@@ -25,6 +25,8 @@ import AOffers from "views/TableList/AOffers.js"
 import SIOffers from "views/TableList/SIOffers.js"
 import SummerInternship from "views/TableList/SummerInternship.js"
 import Companies from "views/TableList/Companies.js";
+import OEP from "views/TableList/OEP.js";
+
 
 import Lock from "@material-ui/icons/Lock";
 import List from "@material-ui/icons/List";
@@ -175,6 +177,14 @@ const dashboardRoutes = [
     component: SpcMembers,
     layout: "/admin"
   },
+  {
+    path: "/open_edit_period",
+    name: "Open Edit Period",
+    icon: "",
+    component: OEP,
+    layout: "/admin"
+  },
+  
 ];
 
 export default dashboardRoutes;
