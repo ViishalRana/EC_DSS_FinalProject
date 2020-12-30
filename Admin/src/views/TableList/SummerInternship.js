@@ -19,6 +19,7 @@ import { Col, Row, Form } from "react-bootstrap";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup'
+import StudentService from "services/StudentService.js";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -60,9 +61,11 @@ export default function SummerInternship() {
     checkedMDes: true,
   });
 
-  var rows=[
-    {id:"201912017",name:"Vishal Rana",skype_id:"ranav8279",mobile_no:"9988776655",cpi:"8.12",placement_status:"placed",companies_eligible:"17",companies_registered:"16",companies_notregistered:"1"},
-    ];
+  const [students,setStudents]=React.useState([]);
+
+    StudentService.getAllStudentsBySI().then((res)=>{
+        setStudents(res.data);
+    });  
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
@@ -247,25 +250,19 @@ export default function SummerInternship() {
                             <TableCell>Mobile NO</TableCell>
                             <TableCell>CPI</TableCell>
                             <TableCell>Placement Status</TableCell>
-                            <TableCell>Eligible</TableCell>
-                            <TableCell>Registered</TableCell>
-                            <TableCell>Not Registered</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            rows.map((row)=>{
+                            students.map((row)=>{
                                 return(
                                     <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.stud_id}</TableCell>
+                                    <TableCell>{row.stud_fname+" "+ row.stud_lname}</TableCell>
                                     <TableCell>{row.skype_id}</TableCell>
-                                    <TableCell>{row.mobile_no}</TableCell>
-                                    <TableCell>{row.cpi}</TableCell>
-                                    <TableCell>{row.placement_status}</TableCell>
-                                    <TableCell>{row.companies_eligible}</TableCell>
-                                    <TableCell>{row.companies_registered}</TableCell>
-                                    <TableCell>{row.companies_notregistered}</TableCell>
+                                    <TableCell>{row.stud_contact}</TableCell>
+                                    <TableCell>{row.stud_cur_cpi}</TableCell>
+                                    <TableCell></TableCell>
                                 </TableRow>  
                                 );
                             })

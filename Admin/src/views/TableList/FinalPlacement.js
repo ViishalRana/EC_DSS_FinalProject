@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -19,6 +19,7 @@ import { Col, Row, Form } from "react-bootstrap";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup'
+import StudentService from "services/StudentService";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -54,20 +55,26 @@ const useStyles = makeStyles(styles);
 export default function FinalPlacement() {
   const classes = useStyles();
   const [state, setState] = React.useState({
+    students:[],
     checkedMScIT: true,
     checkedBTech: true,
     checkedMTech: true,
     checkedMDes: true,
   });
 
-  var rows=[
-    {id:"201912017",name:"Vishal Rana",skype_id:"ranav8279",mobile_no:"9988776655",cpi:"8.12",placement_status:"placed",companies_eligible:"17",companies_registered:"16",companies_notregistered:"1"},
-    ];
+//   var rows=[
+//     {id:"201912017",name:"Vishal Rana",skype_id:"ranav8279",mobile_no:"9988776655",cpi:"8.12",placement_status:"placed",companies_eligible:"17",companies_registered:"16",companies_notregistered:"1"},
+//     ];
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  useEffect(()=>{
+      StudentService.getAllStudents().then((res)=>{
+          setState({students:res.data});
+      });
+  });
   return (
     <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
@@ -257,18 +264,21 @@ export default function FinalPlacement() {
                     </TableHead>
                     <TableBody>
                         {
-                            rows.map((row)=>{
+                            state.students.map((row)=>{
                                 return(
-                                    <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{row.skype_id}</TableCell>
+                                    <TableRow key={row.stud_id}>
+                                    <TableCell>{row.stud_id}</TableCell>
+                                    <TableCell>{row.stud_fname}</TableCell>
+                                    <TableCell>{row.stud_lname}</TableCell>
+                                    <TableCell>{row.stud_mname}</TableCell>
+                                    
+                                    {/* <TableCell>{row.skype_id}</TableCell>
                                     <TableCell>{row.mobile_no}</TableCell>
                                     <TableCell>{row.cpi}</TableCell>
                                     <TableCell>{row.placement_status}</TableCell>
                                     <TableCell>{row.companies_eligible}</TableCell>
                                     <TableCell>{row.companies_registered}</TableCell>
-                                    <TableCell>{row.companies_notregistered}</TableCell>
+                                    <TableCell>{row.companies_notregistered}</TableCell> */}
                                 </TableRow>  
                                 );
                             })

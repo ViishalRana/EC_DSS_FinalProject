@@ -4,13 +4,28 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
+import Table from "@material-ui/core/Table/Table";
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import Card from "components/Card/Card.js";
 // import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
+import RESTService from "services/RESTService";
 
 export default function TableList() {
+
+  const [companyList,setState]=React.useState({
+    data:[]
+  });
+  const today=new Date("YYYY-MM-DD");
+
+  RESTService.getCompanyData().then((res)=>{
+    setState({data:res.data});
+  });
   return (  
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -19,17 +34,46 @@ export default function TableList() {
             <Table
               tableHeaderColor="primary"
               tableHead={["Company Name", "Type" ,"Category", "Criteria", "Placement Date","Open for", "Registration Start Date","Registration End Date","Status","Action"]}
-              tableData={[
-                ["Amazon","Internship","A1","6","28-12-2020","B.tech,M.sc","24-12-2020","25-12-2020","Open",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Google","Internship,job","A1","No cirteria","28-12-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Facebook","Internship","A1","7","28-08-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Netflix","Internship,job","A1","7","28-07-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Flipkart","Internship,job","A1","7","25-09-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Coviam","Internship,job","A","7","23-07-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["MAQ software","Internship,job","A","7","18-07-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>],
-                ["Morgan Stanely","Job","A1","7.5","8-07-2020","B.tech,M.sc","24-12-2020","25-12-2020","closed",<div><Button color="primary">Register</Button><Button color="warning">Not interested</Button><Button color="danger">Cancel</Button></div>]
-              ]}
-            />
+              tableData={companyList.data}/>
+          
+          <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Company Name</TableCell>
+                            <TableCell>Category</TableCell>
+                            <TableCell>Criteria</TableCell>
+                            <TableCell>Drive Start Date</TableCell>
+                            <TableCell>Open For</TableCell>
+                            <TableCell>Registration Start Date</TableCell>
+                            <TableCell>Registration End Date</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            companyList.data.map((company)=>{
+                                return(
+                                    <TableRow key={company.company_id}>
+                                    <TableCell>{company.company_name}</TableCell>
+                                    <TableCell>{company.company_category}</TableCell>
+                                    <TableCell>7.0</TableCell>
+                                    <TableCell>{company.drive_start_date}</TableCell>
+                                    <TableCell>MScIT,BTech</TableCell>
+                                    <TableCell>{company.registration_start_date}</TableCell>
+                                    <TableCell>{company.registration_end_date}</TableCell>
+                                    {/* <TableCell>
+                                      {
+                                        new Date(company.registration_start_date)<=today && today<=new Date(company.registration_end_date) && <span>Open</span>
+                                      }
+                                    </TableCell> */}
+                                </TableRow>  
+                                );
+                            })
+                        }
+                    </TableBody>
+                </Table>
+
           </CardBody>
         </Card>
       </GridItem>

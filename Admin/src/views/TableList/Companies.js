@@ -1,6 +1,7 @@
-import React from "react";
+import React,{ useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import CompanyService from "../../services/CompanyService.js"
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -16,6 +17,7 @@ import CardBody from "components/Card/CardBody.js";
 import TextField from "@material-ui/core/TextField/TextField.js";
 import { Col, Row, Form } from "react-bootstrap";
 import Button from "@material-ui/core/Button/Button.js"
+
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup'
@@ -60,6 +62,12 @@ export default function Companies() {
     checkedMTech: true,
     checkedMDes: true,
   });
+  const [companies,setCompanies]=React.useState([]);
+
+        CompanyService.getAllCompanies().then((res)=>{
+            setCompanies(res.data);
+        });
+
 
   var rows=[
     {company_id:"1",name:"Tata Consultancy Service",type:"Job",locations:"PAN India",category:"A1",date:"2020-12-28 12:00:00 Monday",profiles:"Systems Engineer (Research & Innovation) (11.5 LPA)",open_for:"BTech, MTech, MscIT",registration_end_date:"2020-12-23 18:00:00",companies_notregistered:"1"},
@@ -201,30 +209,36 @@ export default function Companies() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Type</TableCell>
+                            <TableCell>Company Name</TableCell>
+                            <TableCell>Contact Person Name</TableCell>
+                            <TableCell>Contact Person Mobile</TableCell>
                             <TableCell>Location(s)</TableCell>
+                            <TableCell>Drive Start Date</TableCell>
+                            <TableCell>Drive End Date</TableCell>
+                            <TableCell>Offer Type</TableCell>
                             <TableCell>Category</TableCell>
-                            <TableCell>Campus Visit</TableCell>
-                            <TableCell>Profiles</TableCell>
-                            <TableCell>Open For</TableCell>
+                            <TableCell>Bond Details</TableCell>
+                            <TableCell>Registration Start Date</TableCell>
                             <TableCell>Registration End Date</TableCell>
-                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            rows.map((row)=>{
+                            companies.map((company)=>{
                                 return(
-                                    <TableRow key={row.company_id}>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{row.type}</TableCell>
-                                    <TableCell>{row.locations}</TableCell>
-                                    <TableCell>{row.category}</TableCell>
-                                    <TableCell>{row.date}</TableCell>
-                                    <TableCell>{row.profiles}</TableCell>
-                                    <TableCell>{row.open_for}</TableCell>
-                                    <TableCell>{row.registration_end_date}</TableCell>
+                                    <TableRow key={company.company_id}>
+                                    <TableCell>{company.company_name}</TableCell>
+                                    <TableCell>{company.hr_name}</TableCell>
+                                    <TableCell>{company.hr_contact}</TableCell>
+                                    <TableCell>{company.locations}</TableCell>
+                                    <TableCell>{company.drive_start_date}</TableCell>
+                                    <TableCell>{company.drive_end_date}</TableCell>
+                                    <TableCell>{company.offer_type}</TableCell>
+                                    <TableCell>{company.company_category}</TableCell>
+                                    <TableCell>{company.bond_details}</TableCell>
+                                    <TableCell>{company.registration_start_date}</TableCell>
+                                    <TableCell>{company.registration_end_date}</TableCell>
+                                    
                                     <TableCell></TableCell>
                                 </TableRow>  
                                 );
